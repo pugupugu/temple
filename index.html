@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>백 개의 절, 천 년의 길 – 대한민국 100대 사찰</title>
+<meta name="description" content="대한민국을 대표하는 사찰 100곳의 위치와 역사를 지역별로 찾아보세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E4ECE7;        /* 청자 */
+  --surface:#F1F5F2;
+  --ink:#1C2522;       /* 먹 */
+  --muted:#53635B;
+  --line:#B9C8BF;
+  --blue:#2A5C8E;      /* 단청 청 */
+  --red:#A63A2F;       /* 단청 적 */
+  --gold:#8F6A1E;
+  --on-blue:#FFFFFF;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141B18; --surface:#1B2420; --ink:#E3EBE6; --muted:#9DB0A5;
+    --line:#2F3D36; --blue:#7FB0E0; --red:#E07A6D; --gold:#D6AE5B; --on-blue:#0F1A14;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141B18; --surface:#1B2420; --ink:#E3EBE6; --muted:#9DB0A5;
+  --line:#2F3D36; --blue:#7FB0E0; --red:#E07A6D; --gold:#D6AE5B; --on-blue:#0F1A14;
+  color-scheme: dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*,*::before,*::after{box-sizing:inherit;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  line-height:1.75; font-size:16px; word-break:keep-all;
+}
+a{color:var(--blue);}
+:focus-visible{outline:3px solid var(--blue); outline-offset:2px; border-radius:2px;}
+.wrap{max-width:1040px; margin:0 auto; padding:0 20px;}
+
+/* Hero */
+.hero{padding:56px 0 40px; border-bottom:1px solid var(--line);}
+.hero .wrap{display:grid; grid-template-columns:auto 1fr; gap:48px; align-items:start;}
+.title{
+  display:flex; gap:14px; align-items:flex-start;
+}
+.title h1{
+  margin:0; writing-mode:vertical-rl; text-orientation:upright;
+  font-family:"Noto Serif KR","Batang",serif; font-weight:900;
+  font-size:clamp(2.1rem,6.4vw,3.9rem); line-height:1.25; letter-spacing:.12em;
+  min-height:9.5em;
+  animation:bleed 1.6s ease-out both;
+}
+.seal{
+  width:38px; height:38px; background:var(--red); color:#fff;
+  font-family:"Noto Serif KR",serif; font-weight:900; font-size:22px;
+  display:grid; place-items:center; border-radius:3px; margin-top:6px;
+  transform:rotate(-3deg);
+}
+@keyframes bleed{from{opacity:0; filter:blur(8px);} to{opacity:1; filter:blur(0);}}
+@media (prefers-reduced-motion: reduce){.title h1{animation:none;}}
+
+.intro p{margin:0 0 12px; max-width:34em;}
+.intro .lede{font-family:"Noto Serif KR",serif; font-size:1.2rem; line-height:1.7;}
+.intro small{color:var(--muted); display:block; font-size:.86rem; line-height:1.6;}
+
+/* Region bars = filter */
+.regions{margin-top:22px; display:grid; gap:2px;}
+.regions h2{font-size:.95rem; margin:0 0 6px; font-weight:700; color:var(--muted);}
+.rbtn{
+  display:grid; grid-template-columns:3.2em 1fr 2em; align-items:center; gap:10px;
+  width:100%; background:none; border:0; padding:3px 6px; cursor:pointer; color:var(--ink);
+  font:inherit; font-size:.92rem; text-align:left; border-radius:4px;
+}
+.rbtn:hover{background:var(--surface);}
+.rbtn .bar{height:8px; background:var(--line); border-radius:4px; overflow:hidden;}
+.rbtn .bar i{display:block; height:100%; background:var(--muted);}
+.rbtn .n{text-align:right; font-variant-numeric:tabular-nums; color:var(--muted);}
+.rbtn[aria-pressed="true"]{background:var(--blue); color:var(--on-blue);}
+.rbtn[aria-pressed="true"] .bar{background:rgba(255,255,255,.3);}
+.rbtn[aria-pressed="true"] .bar i{background:var(--on-blue);}
+.rbtn[aria-pressed="true"] .n{color:var(--on-blue);}
+
+/* Controls */
+.controls{padding:28px 0 12px; display:flex; flex-wrap:wrap; gap:12px 16px; align-items:center;}
+.search{flex:1 1 260px; position:relative;}
+.search input{
+  width:100%; padding:11px 14px; font:inherit; color:var(--ink);
+  background:var(--surface); border:1px solid var(--line); border-radius:6px;
+}
+.tags{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{
+  font:inherit; font-size:.88rem; padding:6px 13px; cursor:pointer; color:var(--ink);
+  background:transparent; border:1px solid var(--line); border-radius:999px;
+}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink);}
+.status{color:var(--muted); font-size:.9rem; padding:4px 0 10px;}
+
+/* List */
+ul.list{list-style:none; margin:0; padding:0; border-top:1px solid var(--ink);}
+.item{border-bottom:1px solid var(--line);}
+.head{
+  width:100%; display:grid; grid-template-columns:minmax(7.5em,11em) 1fr 6em 1.5em;
+  gap:6px 18px; align-items:baseline; text-align:left; background:none; border:0; cursor:pointer;
+  padding:16px 4px; font:inherit; color:var(--ink);
+}
+.head:hover{background:var(--surface);}
+.nm{font-family:"Noto Serif KR",serif; font-weight:600; font-size:1.25rem;}
+.lc{color:var(--muted); font-size:.95rem;}
+.lc b{font-weight:500; color:var(--ink); margin-right:.5em;}
+.yr{font-variant-numeric:tabular-nums; color:var(--gold); font-size:.92rem; text-align:right;}
+.chev{justify-self:end; transition:transform .2s ease; color:var(--muted);}
+.head[aria-expanded="true"] .chev{transform:rotate(90deg);}
+.panel{padding:2px 4px 22px; display:none; max-width:46em;}
+.panel.open{display:block;}
+.panel p{margin:0 0 12px;}
+.badges{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;}
+.badge{font-size:.8rem; color:var(--red); border:1px solid var(--red); padding:0 9px; border-radius:3px;}
+.links{display:flex; gap:18px; flex-wrap:wrap; font-size:.92rem;}
+.empty{padding:40px 4px; color:var(--muted);}
+
+footer{margin-top:56px; padding:26px 0 40px; border-top:1px solid var(--line); color:var(--muted); font-size:.88rem; line-height:1.7;}
+footer p{margin:0 0 8px; max-width:48em;}
+
+@media (max-width:760px){
+  .hero{padding:36px 0 28px;}
+  .hero .wrap{grid-template-columns:1fr; gap:28px;}
+  .title h1{min-height:0; writing-mode:horizontal-tb; text-orientation:mixed; letter-spacing:0; font-size:2rem; line-height:1.35;}
+  .title{align-items:center;}
+  .head{grid-template-columns:1fr auto 1.2em; padding:14px 2px;}
+  .nm{grid-column:1; grid-row:1;}
+  .yr{grid-column:2; grid-row:1; text-align:right;}
+  .chev{grid-column:3; grid-row:1;}
+  .lc{grid-column:1 / -1; grid-row:2;}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="title">
+      <h1>백 개의 절,<br>천 년의 길</h1>
+      <div class="seal" aria-hidden="true">寺</div>
+    </div>
+    <div class="intro">
+      <p class="lede">신라의 산사부터 근현대의 도량까지, 대한민국을 대표하는 사찰 100곳의 위치와 역사를 한곳에 모았습니다.</p>
+      <p>아래 지역 막대를 누르면 그 지역의 절만 볼 수 있고, 절 이름을 누르면 역사가 펼쳐집니다.</p>
+      <small>‘100대 사찰’을 정한 단일 공식 목록은 없어, 이 사이트는 문화유산·수행 전통·역사적 비중을 고려해 대표 사찰 100곳을 골랐습니다.</small>
+      <div class="regions" id="regions">
+        <h2>지역별 사찰 수</h2>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="controls">
+    <div class="search">
+      <label for="q" style="position:absolute;left:-9999px">사찰 검색</label>
+      <input id="q" type="search" placeholder="사찰 이름, 지역, 인물로 검색" autocomplete="off">
+    </div>
+    <div class="tags" id="tags" role="group" aria-label="분류 필터"></div>
+  </div>
+  <div class="status" id="status" aria-live="polite"></div>
+  <ul class="list" id="list"></ul>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>창건 연대는 대부분 사찰에 전해 오는 연기(緣起) 설화를 따른 것이라 학계의 견해와 다를 수 있습니다. 방문 전에 사찰의 공식 안내와 개방 시간을 확인해 주세요.</p>
+    <p>봉암사처럼 수행 도량으로 출입이 제한되는 곳도 있습니다. 사찰에서는 정숙하고 단정한 복장으로 수행자와 참배객을 배려해 주세요.</p>
+  </div>
+</footer>
+
+<script>
+/* [이름, 지역, 소재지, 창건, 분류(쉼표), 역사] */
+const D = [
+/* 서울 */
+["봉은사","서울","강남구 삼성동","794년","","신라 원성왕 때 연회국사가 견성사라는 이름으로 창건했다고 전해집니다. 1498년 조선 성종비 정현왕후가 선릉의 능침 사찰로 중창하며 봉은사로 불렸고, 판전의 현판은 추사 김정희의 마지막 글씨로 알려져 있습니다."],
+["조계사","서울","종로구 견지동","1910년","","1910년 각황사로 창건된 뒤 태고사를 거쳐 조계사가 되었습니다. 대한불교조계종의 총본산으로, 도심 한가운데서 법회와 템플스테이가 이어집니다."],
+["진관사","서울","은평구 진관동 북한산","1011년","","고려 현종이 자신을 구해 준 진관대사를 위해 세웠다고 전해집니다. 2009년 칠성각을 보수하다 독립운동 당시의 태극기와 독립신문 등이 발견되어 항일 불교의 역사로 주목받았습니다."],
+["길상사","서울","성북구 성북동","1997년","","고급 요정 대원각 터를 주인 김영한(법명 길상화)이 법정스님에게 시주해 1997년 도량으로 다시 태어났습니다. 도시 속 맑고 향기로운 절의 상징이 되었습니다."],
+["화계사","서울","강북구 수유동 북한산","1522년","","조선 중종 때 신월선사가 창건했다고 전해집니다. 외국인 수행자를 위한 국제선원이 일찍부터 열려 세계 각지의 참배객이 찾는 도량입니다."],
+/* 부산 */
+["범어사","부산","금정구 청룡동 금정산","678년","","신라 문무왕 때 의상대사가 창건했다고 전해집니다. 임진왜란 때 불탄 뒤 조선 광해군 때 다시 세워졌고, 영남 지방의 대표적 선찰로 꼽힙니다."],
+["해동용궁사","부산","기장군 기장읍","1376년","","고려 말 나옹혜근이 세웠다고 전해지는 바닷가 절로, 근현대에 중창되며 현재의 이름을 얻었습니다. 동해 파도 위에 놓인 가람 배치가 독특합니다."],
+["장안사","부산","기장군 장안읍 불광산","신라 시대","","신라의 원효대사가 창건했다고 전해지는 기장의 고찰입니다. 임진왜란 때 크게 훼손되었다가 다시 세워졌으며, 대웅전은 보물로 지정되어 있습니다."],
+/* 대구 */
+["동화사","대구","동구 도학동 팔공산","493년","총림","신라 소지왕 때 극달화상이 세웠고, 832년 심지왕사가 중창할 때 겨울에 오동나무 꽃이 피어 동화사라 불렀다고 합니다. 팔공총림으로 승가 교육과 수행의 중심 역할을 합니다."],
+["파계사","대구","동구 중대동 팔공산","804년","","신라 애장왕 때 심지왕사가 창건했다고 전해집니다. 조선 영조의 탄생과 인연이 깊은 기도처로 알려져 왕실의 후원을 받았습니다."],
+["선본사(갓바위)","대구","경산시 와촌면 팔공산 관봉","7세기","","팔공산 관봉 정상의 석조여래좌상, 이른바 ‘갓바위’ 부처님으로 유명한 절입니다. 한 가지 소원은 들어준다는 믿음으로 전국에서 참배객이 오릅니다."],
+/* 인천 */
+["전등사","인천","강화군 길상면 정족산","381년","","고구려 소수림왕 때 아도화상이 진종사로 창건했다고 전해집니다. 고려 충렬왕비 정화궁주가 옥등을 시주한 뒤 전등사로 불렸으며, 인근에 조선왕조실록을 보관하던 정족산사고가 있었습니다."],
+["보문사","인천","강화군 삼산면 석모도 낙가산","635년","관음성지","신라 선덕여왕 때 회정선사가 창건했다고 전해지는 서해의 관음 기도 도량입니다. 눈썹바위에 새긴 마애관음좌상이 대표적입니다."],
+["정수사","인천","강화군 화도면 마니산","639년","","신라 선덕여왕 때 회정선사가 세웠다고 전해집니다. 조선 세종 때 함허대사가 중창했고, 꽃살 창호가 아름다운 대웅보전은 보물로 지정되어 있습니다."],
+/* 광주 */
+["증심사","광주","동구 운림동 무등산","860년","","신라 헌안왕 때 철감선사 도윤이 창건했다고 전해집니다. 무등산 자락의 대표 사찰로, 오백전 등 옛 건물과 계곡 풍경이 어우러집니다."],
+/* 울산 */
+["석남사","울산","울주군 상북면 가지산","824년","","신라 헌덕왕 때 도의국사가 창건했다고 전해집니다. 영남알프스 자락에 있으며, 근현대에 비구니 수행 도량으로 크게 발전했습니다."],
+/* 경기 */
+["용주사","경기","화성시 송산동","854년","","신라 문성왕 때 갈양사로 창건되었다고 전해지며 병자호란 이후 쇠락했습니다. 1790년 정조가 아버지 사도세자의 능원 사찰로 크게 중창해 용주사라 이름 지었습니다."],
+["신륵사","경기","여주시 북내면 봉미산","신라 시대","","남한강변에 자리한 절로, 신라 원효대사의 창건 전승이 있습니다. 고려 말 나옹선사가 이곳에서 입적한 뒤 왕실의 후원 속에 번성했고, 강가의 다층전탑이 유명합니다."],
+["봉선사","경기","남양주시 진접읍 운악산","969년","","고려 광종 때 운악사로 창건되었습니다. 1469년 세조비 정희왕후가 세조의 능을 위해 중창하며 봉선사라는 이름이 되었고, 근대에는 한글 대장경 번역의 산실이 되었습니다."],
+["수종사","경기","남양주시 조안면 운길산","1459년","","조선 세조 때 창건되었다고 전해집니다. 두물머리를 내려다보는 전망과 다산 정약용이 즐겨 찾았다는 이야기로 알려진 차의 고장입니다."],
+["칠장사","경기","안성시 죽산면 칠장산","7세기","","신라 때 자장율사가 세웠다고 전해지며, 고려의 혜소국사와 인연이 깊은 절입니다. 이름의 일곱 장원 설화와 임꺽정 이야기가 함께 전해집니다."],
+["용문사","경기","양평군 용문면 용문산","913년","","신라 신덕왕 때 대경대사가 창건했다고 전해집니다. 경내의 은행나무는 천 년이 넘은 것으로 알려진 천연기념물로, 가을이면 많은 방문객이 찾습니다."],
+["망월사","경기","의정부시 호원동 도봉산","639년","","신라 선덕여왕 때 해호화상이 창건했다고 전해지는 도봉산의 고찰입니다. 산세가 가파른 능선 위에 자리해 수행처로 이름이 높습니다."],
+["연주암","경기","과천시 중앙동 관악산","677년","","신라 문무왕 때 의상대사가 창건했다고 전해집니다. 관악산 정상 가까이에 있으며 양녕·효령대군 설화가 전해지는 연주대가 유명합니다."],
+["흥국사","경기","고양시 덕양구 북한산","661년","","신라 문무왕 때 원효대사가 세웠다고 전해집니다. 조선 영조 때 중창되었으며 임진왜란 승병과 관련된 사연도 남아 있는 북한산 서쪽의 사찰입니다."],
+["보광사","경기","파주시 광탄면 고령산","신라 말","","신라 말 도선국사가 창건했다고 전해집니다. 조선 영조 때 왕실의 후원으로 크게 중창되었고, 경내에 영조 시기의 흔적이 남아 있습니다."],
+["삼막사","경기","안양시 만안구 삼성산","677년","","신라 문무왕 때 원효·의상·윤필이 함께 수도하며 세웠다고 전해지는 사찰입니다. 세 사람의 이야기에서 삼막이라는 이름이 유래했다고 합니다."],
+/* 강원 */
+["월정사","강원","평창군 진부면 오대산","643년","","신라 선덕여왕 때 자장율사가 창건했다고 전해집니다. 팔각구층석탑이 대표 문화유산이며, 한국전쟁 때 소실되었다가 다시 세워졌습니다. 전나무 숲길로도 유명합니다."],
+["상원사","강원","평창군 진부면 오대산","705년","적멸보궁","신라 효소왕 때 보천 태자가 세웠다고 전해집니다. 725년에 만든 동종은 국내에서 가장 오래된 종으로 알려져 있고, 오대산 중대 적멸보궁으로 오르는 길목에 있습니다."],
+["신흥사","강원","속초시 설악동 설악산","652년","","신라 진덕여왕 때 자장율사가 향성사로 창건했다고 전해집니다. 설악산을 대표하는 절로, 청동으로 만든 통일대불이 경내에 있습니다."],
+["낙산사","강원","양양군 강현면 오봉산","671년","관음성지","신라 문무왕 때 의상대사가 창건했다고 전해집니다. 바닷가 절벽 위 홍련암과 해수관음상으로 유명하며, 2005년 산불로 큰 피해를 입었다가 복원되었습니다."],
+["건봉사","강원","고성군 거진읍 금강산 자락","520년","","신라 때 아도화상이 원각사로 창건했다고 전해집니다. 임진왜란 때 승병 활동의 거점이었고, 부처님 치아사리를 모신 곳으로 알려져 있으며 한국전쟁으로 대부분 소실되었다가 복원되었습니다."],
+["백담사","강원","인제군 북면 설악산","647년","","신라 진덕여왕 때 한계사로 창건되었다고 전해집니다. 만해 한용운이 머물며 「님의 침묵」을 집필한 곳으로 알려져 있고, 봉정암 적멸보궁 참배 길의 출발점입니다."],
+["법흥사","강원","영월군 수주면 사자산","643년","적멸보궁","신라 선덕여왕 때 자장율사가 흥녕사로 창건했다고 전해집니다. 부처님 진신사리를 모신 5대 적멸보궁 가운데 하나로 꼽힙니다."],
+["정암사","강원","정선군 고한읍 함백산","636년","적멸보궁","신라 선덕여왕 때 자장율사가 창건했다고 전해집니다. 벽돌 모양 석탑인 수마노탑과 적멸보궁으로 잘 알려져 있습니다."],
+["청평사","강원","춘천시 북산면 오봉산","973년","","고려 광종 때 백암선원으로 창건되었다고 전해집니다. 소양호를 배를 타고 건너야 닿는 절로, 공주와 상사뱀 설화가 얽힌 공주탕이 유명합니다."],
+["수타사","강원","홍천군 동면 공작산","708년","","신라 성덕왕 때 창건되었다고 전해집니다. 공작산 자락의 고요한 절로 산세와 계곡이 아름답고 사찰 숲과 둘레길로도 알려져 있습니다."],
+/* 충북 */
+["법주사","충북","보은군 속리산면 속리산","553년","세계유산","신라 진흥왕 때 의신조사가 창건했다고 전해집니다. 현존하는 유일한 목조 오층탑인 팔상전과 큰 금동미륵대불로 유명하며, ‘산사, 한국의 산지승원’으로 유네스코 세계유산에 등재되었습니다."],
+["구인사","충북","단양군 영춘면 소백산","1945년","","상월원각대조사가 1945년에 세운 대한불교천태종의 총본산입니다. 산비탈을 따라 들어선 대규모 전각이 현대 사찰로서는 독특한 풍경을 이룹니다."],
+["영국사","충북","영동군 양산면 천태산","신라 시대","","신라 때 창건되었다고 전해지며, 고려 공민왕이 홍건적을 피해 이곳에 머문 인연으로 영국사라 불렀다고 합니다. 천연기념물로 지정된 은행나무가 유명합니다."],
+["정방사","충북","제천시 수산면 금수산","661년","","신라 문무왕 때 의상대사가 창건했다고 전해집니다. 절벽 위에 자리해 청풍호와 산세가 한눈에 내려다보이는 암자 같은 절입니다."],
+["반야사","충북","영동군 황간면 백화산","신라 시대","","신라 때 창건되었다고 전해지는 백화산의 고찰입니다. 절벽 위 문수전과 계곡 풍광으로 알려져 있습니다."],
+/* 충남 */
+["마곡사","충남","공주시 사곡면 태화산","640년","세계유산","신라 선덕여왕 때 자장율사가 창건했다고 전해지며 도선이 중창했습니다. 백범 김구가 한때 몸을 숨긴 곳으로도 알려져 있고, ‘산사, 한국의 산지승원’의 하나로 세계유산입니다."],
+["갑사","충남","공주시 계룡면 계룡산","420년","","백제 구이신왕 때 아도화상이 창건했다고 전해집니다. 임진왜란 때 영규대사가 승병을 일으킨 곳으로 이름이 높고, 가을 단풍길로도 사랑받습니다."],
+["동학사","충남","공주시 반포면 계룡산","724년","","신라 성덕왕 때 상원조사가 세웠다고 전해집니다. 계룡산 동쪽 계곡에 있으며 비구니 승가 교육 도량으로 널리 알려져 있습니다."],
+["수덕사","충남","예산군 덕산면 덕숭산","백제 시대","총림","백제 때 창건되었다고 전해집니다. 1308년에 지은 대웅전은 현존하는 고려 목조건축 가운데 손꼽히는 국보이며, 덕숭총림으로 선(禪) 수행의 전통을 이어 갑니다."],
+["개심사","충남","서산시 운산면 상왕산","654년","","백제 의자왕 때 혜감국사가 창건했다고 전해집니다. 휘어진 나무를 그대로 쓴 기둥과 보가 특징인 소박한 건축으로 유명하며, 봄철 겹벚꽃이 아름답습니다."],
+["장곡사","충남","청양군 대치면 칠갑산","850년","","신라 문성왕 때 보조선사 체징이 창건했다고 전해집니다. 상·하 두 대웅전이 따로 있는 독특한 가람 배치이며, 국보로 지정된 철조비로자나불좌상을 모시고 있습니다."],
+["무량사","충남","부여군 외산면 만수산","신라 시대","","신라 때 범일국사가 창건했다고 전해집니다. 매월당 김시습이 말년에 머물다 입적한 곳으로 알려져 있으며, 극락전과 오층석탑이 보물로 지정되어 있습니다."],
+["관촉사","충남","논산시 은진면 반야산","968년","","고려 광종 때 혜명대사가 창건했습니다. 약 18미터 높이의 석조미륵보살입상, 이른바 은진미륵으로 유명합니다."],
+["간월암","충남","서산시 부석면 간월도","14세기","","무학대사가 창건했다고 전해지는 작은 암자입니다. 밀물 때는 섬이 되고 썰물 때는 걸어 들어갈 수 있어 서해 낙조 명소로 사랑받습니다."],
+/* 전북 */
+["금산사","전북","김제시 금산면 모악산","599년","","백제 법왕 때 창건되었다고 전해집니다. 3층 구조의 미륵전은 국보로, 미륵 신앙의 중심 도량입니다. 후백제 견훤이 갇혔던 곳으로도 알려져 있습니다."],
+["선운사","전북","고창군 아산면 도솔산","577년","","백제 위덕왕 때 검단선사가 창건했다고 전해집니다. 절 뒤를 두른 동백나무 숲과 봄철 동백꽃, 가을 꽃무릇으로 유명합니다."],
+["내소사","전북","부안군 진서면 능가산","633년","","백제 무왕 때 혜구두타가 창건했다고 전해집니다. 꽃 문양 창살로 꾸민 대웅보전과 전나무 숲길이 아름다운 변산반도의 대표 사찰입니다."],
+["개암사","전북","부안군 상서면 변산","634년","","백제 무왕 때 창건되었다고 전해지며, 뒤편 울금바위는 백제 부흥운동의 근거지 주류성과 연결해 보는 견해가 있습니다. 대웅전은 보물로 지정되어 있습니다."],
+["실상사","전북","남원시 산내면 지리산","828년","","신라 흥덕왕 때 홍척이 창건해 구산선문 가운데 가장 먼저 열린 실상산문의 중심이 되었습니다. 산중이 아닌 평지에 자리한 가람과 철불이 특색입니다."],
+["화암사","전북","완주군 경천면 불명산","신라 시대","","신라 때 창건되었다고 전해집니다. 하앙식 구조를 지닌 극락전은 국보로, 가파른 바위 계곡 안쪽에 자리한 조용한 절입니다."],
+["위봉사","전북","완주군 소양면 위봉산","604년","","백제 무왕 때 창건되었다고 전해지며 위봉산성 안에 자리합니다. 조선 시대에는 전주 일대의 본사 역할을 한 큰 절이었습니다."],
+["마이산 탑사","전북","진안군 마령면 마이산","20세기 초","","이갑룡 처사가 약 30년에 걸쳐 쌓았다고 전해지는 돌탑 군(群)으로 이름난 절입니다. 말의 귀를 닮은 마이산 아래에서 신비로운 풍경을 이룹니다."],
+/* 전남 */
+["송광사","전남","순천시 송광면 조계산","신라 말","총림","고려의 보조국사 지눌이 정혜결사를 이끌며 수행 도량으로 크게 일으켰고 열여섯 국사를 배출해 승보사찰로 불립니다. 한국 불교 조계종의 이름이 이 산에서 비롯되었습니다."],
+["선암사","전남","순천시 승주읍 조계산","6세기","세계유산","백제 시대 아도화상 창건 전승이 있으며 875년 도선국사가 중창했다고 전해집니다. 승선교와 전통 뒷간, 매화로 유명하고 ‘산사, 한국의 산지승원’으로 세계유산입니다."],
+["대흥사","전남","해남군 삼산면 두륜산","신라 시대","세계유산","신라 때 창건 전승이 있으며, 서산대사 휴정의 의발이 전해지며 조선 후기에 크게 번성했습니다. 다성(茶聖) 초의선사가 머문 곳으로도 알려져 있습니다."],
+["미황사","전남","해남군 송지면 달마산","749년","","신라 경덕왕 때 의조화상이 창건했다고 전해집니다. 땅끝 달마산 자락에서 바다를 내려다보는 절로, 해 질 녘 풍경이 유명합니다."],
+["화엄사","전남","구례군 마산면 지리산","544년","","백제 성왕 때 연기조사가 창건했다고 전해집니다. 임진왜란 때 불탄 뒤 숙종 때 중건한 각황전은 국보이며, 지리산을 대표하는 큰 절입니다."],
+["천은사","전남","구례군 광의면 지리산","828년","","신라 흥덕왕 때 덕운조사가 감로사로 창건했다고 전해집니다. 지리산 노고단 가는 길의 호수와 숲으로 유명합니다."],
+["백양사","전남","장성군 북하면 백암산","632년","총림","백제 무왕 때 여환이 창건해 백암사라 불렀다고 전해집니다. 고불총림으로 수행 전통을 이어 가며 가을 단풍으로도 이름이 높습니다."],
+["불갑사","전남","영광군 불갑면 불갑산","384년","","백제 침류왕 때 인도 승려 마라난타가 창건했다고 전해지는, 한반도 불교 전래와 맞닿은 절입니다. 가을 상사화 군락으로 유명합니다."],
+["무위사","전남","강진군 성전면 월출산","617년","","신라 때 원효대사가 창건했다고 전해집니다. 조선 초기에 지은 극락보전은 국보이며, 내부의 아미타 후불벽화로 이름난 절입니다."],
+["백련사","전남","강진군 도암면 만덕산","839년","","신라 문성왕 때 무염국사가 창건했다고 전해지며 고려의 원묘국사 요세가 백련결사를 이끈 곳입니다. 다산 정약용이 유배 시절 오간 길로도 알려져 있고 동백나무 숲이 장관입니다."],
+["운주사","전남","화순군 도암면 운주산","미상","","창건 시기와 배경이 분명하지 않아 도선국사 창건설 등 여러 전승이 전합니다. 산자락에 흩어진 석불과 석탑, 이른바 천불천탑으로 유명합니다."],
+["향일암","전남","여수시 돌산읍 금오산","644년","관음성지","신라 때 원효대사가 원통암으로 세웠다고 전해집니다. 바다를 향한 절벽 위에서 맞는 일출 풍경으로 유명한 관음 기도 도량입니다."],
+["태안사","전남","곡성군 죽곡면 동리산","742년","","신라 경덕왕 때 창건되었다고 전해지며 통일신라 말 동리산문의 중심이었습니다. 계곡을 따라 이어진 숲길과 능파각이 아름답습니다."],
+/* 경북 */
+["불국사","경북","경주시 진현동 토함산","528년","세계유산","신라 법흥왕 때 창건되었다고 전해지고, 751년 김대성이 크게 중창하기 시작했습니다. 다보탑과 석가탑, 청운교·백운교가 유명하며 석굴암과 함께 1995년 유네스코 세계유산에 올랐습니다."],
+["석굴암","경북","경주시 진현동 토함산","751년","세계유산","김대성이 751년에 짓기 시작해 8세기 후반에 완성했다고 전해지는 인공 석굴입니다. 본존불과 보살상, 제자상의 조화가 신라 불교 조각의 정수로 평가됩니다."],
+["분황사","경북","경주시 구황동","634년","","신라 선덕여왕 때 창건된 절로, 원효대사가 한때 머물며 많은 저술을 남긴 곳으로 알려져 있습니다. 벽돌 모양으로 돌을 쌓은 모전석탑이 국보로 남아 있습니다."],
+["기림사","경북","경주시 양북면 함월산","643년","","신라 선덕여왕 때 광유성인이 창건했다고 전해지며 원효대사가 중창했다고 합니다. 동해 감포 인근 산속에 있으며 불교 의례와 약수로 알려져 있습니다."],
+["부석사","경북","영주시 부석면 봉황산","676년","세계유산","신라 문무왕 때 의상대사가 창건한 화엄종의 중심 사찰입니다. 배흘림기둥의 무량수전과 극락세계를 형상화한 가람 배치가 유명하며, 세계유산으로 등재되어 있습니다."],
+["봉정사","경북","안동시 서후면 천등산","672년","세계유산","신라 문무왕 때 능인대덕이 창건했다고 전해집니다. 극락전은 현존하는 가장 오래된 목조건축으로 손꼽히며, 세계유산으로 등재되어 있습니다."],
+["고운사","경북","의성군 단촌면 등운산","681년","","신라 신문왕 때 의상대사가 창건했다고 전해집니다. 최치원(호 고운)이 이곳에서 가운루와 우화루를 지었다고 전해지며 절 이름도 그의 호에서 비롯되었다고 합니다."],
+["직지사","경북","김천시 대항면 황악산","418년","","신라 눌지왕 때 아도화상이 창건했다고 전해집니다. 사명대사가 출가한 절로 알려져 있으며 ‘곧바로 사람의 마음을 가리킨다’는 선(禪)의 뜻이 이름에 담겨 있습니다."],
+["은해사","경북","영천시 청통면 팔공산","809년","","신라 헌덕왕 때 혜철국사가 창건했다고 전해집니다. 추사 김정희가 쓴 현판이 여러 곳에 남아 있고 팔공산 자락의 대표 사찰입니다."],
+["운문사","경북","청도군 운문면 호거산","560년","","신라 진흥왕 때 창건되었다고 전해집니다. 비구니 승가대학이 있는 대표적 수행 도량이며, 천연기념물인 처진소나무가 유명합니다."],
+["보경사","경북","포항시 북구 송라면 내연산","602년","","신라 진평왕 때 지명법사가 창건했다고 전해집니다. 내연산 열두 폭포 계곡 입구에 있어 사찰과 폭포 탐방길이 이어집니다."],
+["오어사","경북","포항시 남구 오천읍 운제산","신라 시대","","원효대사와 혜공스님의 설화에서 이름이 유래한 절입니다. 두 스님이 물고기를 살리며 ‘내 고기’라 다툰 이야기가 전해지며 저수지와 어우러진 풍경이 좋습니다."],
+["불영사","경북","울진군 서면 천축산","651년","","신라 진덕여왕 때 의상대사가 창건했다고 전해집니다. 연못에 부처 모양 바위가 비쳐 불영사라 불렀다고 하며 비구니 수행 도량으로 알려져 있습니다."],
+["대승사","경북","문경시 산북면 사불산","신라 시대","","신라 때 창건되었다고 전해집니다. 하늘에서 내려온 사면 불상 이야기가 얽힌 사불산 아래 있으며 근현대 선 수행 전통으로 알려져 있습니다."],
+["봉암사","경북","문경시 가은읍 희양산","890년","","신라 헌강왕 때 지증대사 도헌이 창건해 희양산문의 중심이 되었습니다. 현재는 종립선원으로 수행에 전념하는 곳이라 평소에는 일반 출입이 제한되고, 부처님오신날 하루만 개방됩니다."],
+["청량사","경북","봉화군 명호면 청량산","663년","","신라 문무왕 때 원효대사가 창건했다고 전해집니다. 청량산 열두 봉우리 속 절벽 위에 자리한 유리보전이 대표적 풍경입니다."],
+["용문사","경북","예천군 용문면 용문산","870년","","신라 경문왕 때 두운대사가 창건했다고 전해집니다. 경전을 돌려 읽는 효과를 낸다는 윤장대가 보물로 남아 있어 독특한 신앙의 흔적을 보여 줍니다."],
+/* 경남 */
+["해인사","경남","합천군 가야면 가야산","802년","세계유산,총림","신라 애장왕 때 순응과 이정이 창건했다고 전해집니다. 팔만대장경판과 이를 보관하는 장경판전으로 유명하며 법보사찰이자 총림으로 유네스코 세계유산입니다."],
+["통도사","경남","양산시 하북면 영축산","646년","세계유산,총림,적멸보궁","신라 선덕여왕 때 자장율사가 창건했습니다. 부처님 진신사리를 모신 적멸보궁이 있는 불보사찰이며 영축총림으로, 세계유산으로 등재되어 있습니다."],
+["쌍계사","경남","하동군 화개면 지리산","723년","총림","신라 성덕왕 때 삼법화상과 의상의 제자들이 세웠다고 전해지며 840년 진감선사가 중창했습니다. 최치원이 쓴 진감선사대공탑비와 차 시배지 전설로 유명하며 쌍계총림입니다."],
+["보리암","경남","남해군 상주면 금산","683년","관음성지","신라 신문왕 때 원효대사가 초막을 지은 것이 시작이라고 전해집니다. 남해 바다와 섬들이 내려다보이는 관음 기도 도량으로, 이성계의 기도 설화도 전해집니다."],
+["표충사","경남","밀양시 단장면 재약산","654년","","신라 무열왕 때 창건되었다고 전해집니다. 임진왜란 때 활약한 사명대사를 기리는 표충사당이 있고, 재약산 자락의 산세가 수려합니다."],
+["옥천사","경남","고성군 개천면 연화산","676년","","신라 문무왕 때 의상대사가 창건했다고 전해집니다. 연화산 도립공원 안에 있으며 조선 시대 불화와 연꽃 모양 산세로 알려져 있습니다."],
+["관룡사","경남","창녕군 창녕읍 화왕산","신라 시대","","신라 때 창건되었다고 전해지며 원효대사가 중창했다고 합니다. 용이 승천했다는 이야기에서 이름이 유래했고 뒤편 용선대의 석조여래좌상이 유명합니다."],
+["내원사","경남","양산시 하북면 천성산","신라 시대","","신라 때 창건되었다고 전해지는 천성산 계곡의 절입니다. 현재는 비구니 수행 도량으로 맑은 계곡과 숲으로 알려져 있습니다."],
+["대원사","경남","산청군 삼장면 지리산","548년","","신라 진흥왕 때 연기조사가 창건했다고 전해집니다. 지리산 천왕봉 아래 계곡에 자리한 비구니 수행 도량입니다."],
+/* 제주 */
+["관음사","제주","제주시 아라동 한라산","1908년","","1908년 비구니 안봉려관이 한라산 북쪽에 세운 제주 불교의 중심 사찰입니다. 4·3 사건 때 불탔다가 다시 세워졌습니다."],
+["약천사","제주","서귀포시 대포동","1980년대","","1980년대에 창건되어 한라산 남쪽 바닷가에 자리한 절입니다. 국내 최대급 규모의 대적광전과 귤밭 풍경으로 알려져 있습니다."]
+];
+
+const PROVS = ["서울","부산","대구","인천","광주","울산","경기","강원","충북","충남","전북","전남","경북","경남","제주"];
+const TAGS = ["세계유산","총림","관음성지","적멸보궁"];
+const rows = D.map(r => ({name:r[0], prov:r[1], loc:r[2], year:r[3], tags:r[4] ? r[4].split(",") : [], desc:r[5]}));
+
+let fProv = "", fTag = "", fQ = "";
+
+const $ = s => document.querySelector(s);
+const regionsEl = $("#regions"), tagsEl = $("#tags"), listEl = $("#list"), statusEl = $("#status");
+
+const counts = {};
+PROVS.forEach(p => counts[p] = rows.filter(r => r.prov === p).length);
+const maxCount = Math.max(...Object.values(counts));
+
+function mkRegionBtn(label, n, value, w){
+  const b = document.createElement("button");
+  b.className = "rbtn"; b.type = "button"; b.dataset.value = value;
+  b.setAttribute("aria-pressed", "false");
+  b.innerHTML = '<span>' + label + '</span><span class="bar"><i style="width:' + w + '%"></i></span><span class="n">' + n + '</span>';
+  b.addEventListener("click", () => { fProv = (fProv === value ? "" : value); render(); });
+  return b;
+}
+regionsEl.appendChild(mkRegionBtn("전체", rows.length, "", 100));
+PROVS.forEach(p => regionsEl.appendChild(mkRegionBtn(p, counts[p], p, counts[p] / maxCount * 100)));
+
+TAGS.forEach(t => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.type = "button"; b.textContent = t; b.dataset.value = t;
+  b.setAttribute("aria-pressed", "false");
+  b.addEventListener("click", () => { fTag = (fTag === t ? "" : t); render(); });
+  tagsEl.appendChild(b);
+});
+$("#q").addEventListener("input", e => { fQ = e.target.value.trim(); render(); });
+
+function esc(s){ return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function render(){
+  document.querySelectorAll(".rbtn").forEach(b => {
+    const on = (b.dataset.value === fProv);
+    b.setAttribute("aria-pressed", String(on));
+  });
+  document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.value === fTag)));
+
+  const q = fQ.toLowerCase();
+  const shown = rows.filter(r =>
+    (!fProv || r.prov === fProv) &&
+    (!fTag || r.tags.includes(fTag)) &&
+    (!q || (r.name + r.prov + r.loc + r.desc + r.year).toLowerCase().includes(q))
+  );
+
+  statusEl.textContent = shown.length + "곳의 사찰";
+  if (!shown.length){
+    listEl.innerHTML = '<li class="empty">조건에 맞는 사찰이 없습니다. 검색어를 줄이거나 필터를 해제해 보세요.</li>';
+    return;
+  }
+  listEl.innerHTML = shown.map((r, i) => {
+    const full = r.name + " " + r.prov + " " + r.loc;
+    const g = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(full);
+    const n = "https://map.naver.com/p/search/" + encodeURIComponent(r.name + " " + r.loc);
+    const badges = r.tags.length ? '<div class="badges">' + r.tags.map(t => '<span class="badge">' + t + '</span>').join("") + '</div>' : "";
+    return '<li class="item">' +
+      '<button class="head" type="button" aria-expanded="false" aria-controls="p' + i + '">' +
+        '<span class="nm">' + esc(r.name) + '</span>' +
+        '<span class="lc"><b>' + esc(r.prov) + '</b>' + esc(r.loc) + '</span>' +
+        '<span class="yr">' + esc(r.year) + '</span>' +
+        '<span class="chev" aria-hidden="true">›</span>' +
+      '</button>' +
+      '<div class="panel" id="p' + i + '">' + badges +
+        '<p>' + esc(r.desc) + '</p>' +
+        '<div class="links"><a href="' + g + '" target="_blank" rel="noopener">구글 지도에서 위치 보기</a>' +
+        '<a href="' + n + '" target="_blank" rel="noopener">네이버 지도에서 위치 보기</a></div>' +
+      '</div></li>';
+  }).join("");
+}
+
+listEl.addEventListener("click", e => {
+  const h = e.target.closest(".head");
+  if (!h) return;
+  const open = h.getAttribute("aria-expanded") === "true";
+  h.setAttribute("aria-expanded", String(!open));
+  document.getElementById(h.getAttribute("aria-controls")).classList.toggle("open", !open);
+});
+
+render();
+</script>
+</body>
+</html>
