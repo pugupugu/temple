@@ -2,8 +2,8 @@
 """Wikimedia Commons에서 사찰별 자유 라이선스 사진을 찾아 images.js 를 만듭니다.
 
 사용법 (인터넷 연결 필요, 외부 패키지 없음):
-    python3 tools/fetch_images.py            # 전체 100곳
-    python3 tools/fetch_images.py 73 91      # 번호 지정 (temples.js 순서, 1~100)
+    python3 tools/fetch_images.py            # 전체 127곳
+    python3 tools/fetch_images.py 73 91      # 번호 지정 (temples.js 순서, 1~127)
 
 결과는 프로젝트 루트의 images.js 에 저장됩니다. 검색 결과는 기계적으로 걸러낸 것이라
 오매칭이 있을 수 있으니, 만든 뒤 사이트에서 사진을 훑어보고 엉뚱한 항목은 images.js 에서 지우세요.
@@ -16,7 +16,7 @@ UA = "temple100-guide/1.0 (personal project; contact: see repository)"
 PER_TEMPLE = 4          # 사찰당 최대 사진 수
 OK_LICENSE = re.compile(r"^(CC[ -]BY|CC0|Public domain|PD|GFDL|FAL)", re.I)
 
-# temples.js 와 같은 순서의 로마자(Commons 파일명·분류에 쓰이는 표기). 검색어이자 오매칭 필터입니다.
+# temples.js 와 같은 순서(1~127번)의 로마자(Commons 파일명·분류에 쓰이는 표기). 검색어이자 오매칭 필터입니다.
 EN = ["Bongeunsa","Jogyesa","Jingwansa","Gilsangsa","Hwagyesa","Beomeosa","Haedong Yonggungsa","Jangansa",
 "Donghwasa","Pagyesa","Gatbawi","Jeondeungsa","Bomunsa","Jeongsusa","Jeungsimsa","Seongnamsa","Yongjusa",
 "Silleuksa","Bongseonsa","Sujongsa","Chiljangsa","Yongmunsa Yangpyeong","Mangwolsa","Yeonjuam","Heungguksa Goyang",
@@ -27,8 +27,13 @@ EN = ["Bongeunsa","Jogyesa","Jingwansa","Gilsangsa","Hwagyesa","Beomeosa","Haedo
 "Hwaeomsa","Cheoneunsa","Baegyangsa","Bulgapsa","Muwisa","Baengnyeonsa","Unjusa","Hyangiram","Taeansa","Bulguksa",
 "Seokguram","Bunhwangsa","Girimsa","Buseoksa","Bongjeongsa","Gounsa","Jikjisa","Eunhaesa","Unmunsa","Bogyeongsa",
 "Oeosa","Bulyeongsa","Daeseungsa","Bongamsa","Cheongnyangsa","Yongmunsa Yecheon","Haeinsa","Tongdosa","Ssanggyesa",
-"Boriam","Pyochungsa","Okcheonsa","Gwanryongsa","Naewonsa","Daewonsa","Gwaneumsa Jeju","Yakcheonsa"]
-assert len(EN) == 100, len(EN)
+"Boriam","Pyochungsa","Okcheonsa","Gwanryongsa","Naewonsa","Daewonsa","Gwaneumsa Jeju","Yakcheonsa",
+# 101번~ 추가 추천 사찰
+"Jajaeam","Hyeondeungsa","Cheongnyongsa Anseong","Hoeamsa","Waujeongsa","Bongnyeongsa","Biamsa","Boseoksa",
+"Goransa","Gwangdeoksa","Buseoksa Seosan","Sinwonsa","Bokcheonam","Heungdeoksa","Bongjeongam","Osaeam","Guryongsa",
+"Samhwasa","Dopiansa","Bodeoksa","Cheoneunsa Samcheok",
+"Sariam","Hongnyeonam","Dosolam","Burilam","Geungnakam","Baengnyeonam"]
+assert len(EN) == 127, len(EN)
 
 def norm(s):
     return re.sub(r"[^a-z0-9]", "", s.lower())
@@ -72,7 +77,7 @@ def search(key):
         return json.load(r)
 
 def main(argv):
-    ids = [int(a) for a in argv] or list(range(1, 101))
+    ids = [int(a) for a in argv] or list(range(1, len(EN) + 1))
     path = ROOT / "images.js"
     result = {}
     if path.exists():   # 기존 결과는 보존하고 지정한 번호만 갱신
@@ -91,7 +96,7 @@ def main(argv):
     body = json.dumps({str(k): result[k] for k in sorted(result)}, ensure_ascii=False, indent=1)
     path.write_text(
         "// 사찰별 대표 사진 — Wikimedia Commons 자유 라이선스 이미지 (작가·라이선스 표기 필수)\n"
-        "// 키는 사찰 번호(temples.js 배열 순서, 1~100). tools/fetch_images.py 로 생성됨 — 오매칭은 직접 지워 주세요.\n"
+        "// 키는 사찰 번호(temples.js 배열 순서, 1~127). tools/fetch_images.py 로 생성됨 — 오매칭은 직접 지워 주세요.\n"
         f"const TEMPLE_IMAGES = {body};\n", encoding="utf-8")
     print("저장:", path)
 

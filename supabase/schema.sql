@@ -1,12 +1,13 @@
 -- 100대 사찰 순례 가이드: 순례 완료 표시 + 사진 (100대 명산 mt100_* 와 같은 구조)
+-- 번호 상한은 300 (기본 100곳 + 추가 추천 사찰 101번~ 대응)
 -- 이미 프로젝트 hriogfnsqbnvaiixjmko(doc-prompt)에 적용되어 있습니다. 다른 프로젝트에서 쓰려면 SQL Editor에 그대로 실행하세요.
 create table if not exists public.tp100_done (
-  tp integer primary key check (tp >= 1 and tp <= 100),
+  tp integer primary key check (tp >= 1 and tp <= 300),
   done_at timestamptz not null default now()
 );
 
 create table if not exists public.tp100_photos (
-  tp integer not null check (tp >= 1 and tp <= 100),
+  tp integer not null check (tp >= 1 and tp <= 300),
   slot integer not null check (slot >= 0 and slot <= 19),
   path text not null,
   updated_at timestamptz not null default now(),
