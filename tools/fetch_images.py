@@ -8,7 +8,7 @@
 결과는 프로젝트 루트의 images.js 에 저장됩니다. 검색 결과는 기계적으로 걸러낸 것이라
 오매칭이 있을 수 있으니, 만든 뒤 사이트에서 사진을 훑어보고 엉뚱한 항목은 images.js 에서 지우세요.
 """
-import json, re, sys, time, html, urllib.parse, urllib.request, pathlib
+import json, re, sys, time, html, urllib.error, urllib.parse, urllib.request, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 API = "https://commons.wikimedia.org/w/api.php"
@@ -73,8 +73,14 @@ def search(key):
          "iiprop": "url|mime|extmetadata", "iiurlwidth": "960",
          "iiextmetadatafilter": "Artist|LicenseShortName|ImageDescription"}
     req = urllib.request.Request(API + "?" + urllib.parse.urlencode(q), headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
+    for wait in (10, 30, 60, 120, 0):   # 429(요청 과다) 시 기다렸다가 재시도
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or not wait:
+                raise
+            time.sleep(wait)
 
 def main(argv):
     ids = [int(a) for a in argv] or list(range(1, len(EN) + 1))
@@ -92,7 +98,7 @@ def main(argv):
             print(f"[{i:3d}] {key}: 실패 ({e})")
             continue
         print(f"[{i:3d}] {key}: {len(result[i])}장")
-        time.sleep(0.5)
+        time.sleep(2)
     body = json.dumps({str(k): result[k] for k in sorted(result)}, ensure_ascii=False, indent=1)
     path.write_text(
         "// 사찰별 대표 사진 — Wikimedia Commons 자유 라이선스 이미지 (작가·라이선스 표기 필수)\n"
